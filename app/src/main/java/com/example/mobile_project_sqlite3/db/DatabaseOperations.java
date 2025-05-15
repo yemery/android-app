@@ -7,7 +7,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.mobile_project_sqlite3.model.Project;
 import com.example.mobile_project_sqlite3.model.User;
+import com.example.mobile_project_sqlite3.model.enums.Status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +72,45 @@ public class DatabaseOperations {
         cursor.close();
         return userList;
     }
+    // In DatabaseOperations.java
+    public long addProject(Project project) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.KEY_PROJECT_NAME, project.getName());
+        values.put(DatabaseHelper.KEY_PROJECT_DESCRIPTION, project.getDescription());
+        values.put(DatabaseHelper.KEY_START_DATE, project.getStartDate());
+        values.put(DatabaseHelper.KEY_END_DATE, project.getEndDate());
+        values.put(DatabaseHelper.KEY_STATUS, project.getStatus().name());
+        values.put(DatabaseHelper.KEY_USER_ID, project.getUserId());
 
+        return database.insert(DatabaseHelper.TABLE_PROJECTS, null, values);
+    }
+
+    @SuppressLint("Range")
+    public List<Project> getProjectsByUserId(long userId) {
+        List<Project> projects = new ArrayList<>();
+
+        Cursor cursor = database.query(DatabaseHelper.TABLE_PROJECTS,
+                null,
+                DatabaseHelper.KEY_USER_ID + " = ?",
+                new String[]{String.valueOf(userId)},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Project project = new Project();
+                project.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.KEY_PROJECT_ID)));
+                project.setName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.KEY_PROJECT_NAME)));
+                project.setDescription(cursor.getString(cursor.getColumnIndex(DatabaseHelper.KEY_PROJECT_DESCRIPTION)));
+                project.setStartDate(cursor.getString(cursor.getColumnIndex(DatabaseHelper.KEY_START_DATE)));
+                project.setEndDate(cursor.getString(cursor.getColumnIndex(DatabaseHelper.KEY_END_DATE)));
+                project.setStatus(Status.valueOf(cursor.getString(cursor.getColumnIndex(DatabaseHelper.KEY_STATUS))));
+                project.setUserId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.KEY_USER_ID)));
+
+                projects.add(project);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return projects;
+    }
 
 }

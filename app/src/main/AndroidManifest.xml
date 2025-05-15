@@ -28,6 +28,12 @@
         <activity android:name=".view.activity.ProfileActivity" />
         <activity android:name=".view.activity.user.UsersListActivity" />
         <activity android:name=".view.activity.LoginActivity" />
+
+        <activity android:name=".view.activity.project.ProjectsActivity" />
+        <activity android:name=".view.activity.project.AddProjectActivity" />
+<!--        <activity android:name=".view.activity.project.ProjectDetailsActivity" />-->
+<!--        <activity android:name=".view.activity.project.EditProjectActivity" />-->
+<!--        <activity android:name=".view.activity.project.ProjectStatusActivity" />-->
     </application>
 
 </manifest>

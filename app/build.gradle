@@ -39,4 +39,6 @@ dependencies {
     androidTestImplementation libs.espresso.core
     implementation 'androidx.sqlite:sqlite:2.2.0'
     implementation 'androidx.sqlite:sqlite-ktx:2.2.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+
 }

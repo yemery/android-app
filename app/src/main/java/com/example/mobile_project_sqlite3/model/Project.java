@@ -34,6 +34,11 @@ public class Project {
         this.createdAt =LocalDateTime.now();
 
     }
+
+    public Project() {
+
+    }
+
     public Long getId() {
         return id;
     }
