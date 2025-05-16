@@ -79,4 +79,7 @@ public class ProjectController {
             return null;
         }
     }
+
+    public void close() {
+    }
 }

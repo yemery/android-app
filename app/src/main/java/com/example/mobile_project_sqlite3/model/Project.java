@@ -6,9 +6,10 @@ import androidx.annotation.RequiresApi;
 
 import com.example.mobile_project_sqlite3.model.enums.Status;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Project {
+public class Project  implements Serializable {
 
     private Long id;
     private String name;

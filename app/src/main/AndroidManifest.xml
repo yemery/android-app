@@ -31,6 +31,7 @@
 
         <activity android:name=".view.activity.project.ProjectsActivity" />
         <activity android:name=".view.activity.project.AddProjectActivity" />
+        <activity android:name=".view.activity.project.EditProjectActivity" />
 <!--        <activity android:name=".view.activity.project.ProjectDetailsActivity" />-->
 <!--        <activity android:name=".view.activity.project.EditProjectActivity" />-->
 <!--        <activity android:name=".view.activity.project.ProjectStatusActivity" />-->

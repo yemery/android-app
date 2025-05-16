@@ -20,7 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class ProjectsActivity extends AppCompatActivity {
+public class ProjectsActivity extends AppCompatActivity  implements ProjectAdapter.OnProjectActionListener{
     private static final int ADD_PROJECT_REQUEST = 1; // Add this constant
 
     private RecyclerView rvProjects;
@@ -45,7 +45,7 @@ public class ProjectsActivity extends AppCompatActivity {
         fabAddProject.setOnClickListener(v -> {
             Intent intent = new Intent(ProjectsActivity.this, AddProjectActivity.class);
             intent.putExtra("USER_ID", userId);
-            startActivityForResult(intent, ADD_PROJECT_REQUEST); // Changed to startActivityForResult
+            startActivityForResult(intent, ADD_PROJECT_REQUEST);
         });
 
         loadProjects();
@@ -55,10 +55,12 @@ public class ProjectsActivity extends AppCompatActivity {
         List<Project> projects = projectController.getProjectsByUserId(userId);
         if (projects != null) {
             if (projectAdapter == null) {
-                projectAdapter = new ProjectAdapter(projects, this::onProjectClick);
+                projectAdapter = new ProjectAdapter(projects,
+                        this::onProjectClick,
+                        this); // Pass this as the action listener
                 rvProjects.setAdapter(projectAdapter);
             } else {
-                projectAdapter.updateProjects(projects); // Update existing adapter
+                projectAdapter.updateProjects(projects);
             }
         } else {
             Toast.makeText(this, "Failed to load projects", Toast.LENGTH_SHORT).show();
@@ -68,7 +70,8 @@ public class ProjectsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == ADD_PROJECT_REQUEST && resultCode == RESULT_OK) {
+        if ((requestCode == ADD_PROJECT_REQUEST || requestCode == EDIT_PROJECT_REQUEST)
+                && resultCode == RESULT_OK) {
             loadProjects(); // Refresh the project list
         }
     }
@@ -81,7 +84,31 @@ public class ProjectsActivity extends AppCompatActivity {
     }
 
     // ... rest of your activity methods ...
+    @Override
+    public void onEditProject(Project project) {
+        Intent intent = new Intent(this, EditProjectActivity.class);
+        intent.putExtra("PROJECT", project);
+        startActivityForResult(intent, EDIT_PROJECT_REQUEST);
+    }
+    private static final int EDIT_PROJECT_REQUEST = 2;
 
+    @Override
+    public void onDeleteProject(Project project) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Project")
+                .setMessage("Are you sure you want to delete this project?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    boolean success = projectController.deleteProject(project.getId());
+                    if (success) {
+                        Toast.makeText(this, "Project deleted", Toast.LENGTH_SHORT).show();
+                        loadProjects(); // Refresh the list
+                    } else {
+                        Toast.makeText(this, "Failed to delete project", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
