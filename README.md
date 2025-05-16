@@ -33,19 +33,16 @@
 - Local SQLite storage
 - Efficient CRUD operations
 - Data relationships (user-projects)
-- Data validation
 
 ## Tech Stack
 
 - **Frontend**: 
   - Android XML layouts
-  - Material Design Components
 - **Backend**: 
   - Java 8
   - Android SDK
 - **Database**: 
   - SQLite
-  - Room (optional)
 - **Architecture**: 
   - MVC Pattern
   - DAO pattern
@@ -84,10 +81,6 @@ CREATE TABLE projects (
   - Java JDK 11+
   
 - **Setup**: 
-  - Android Studio Flamingo or later
-  - Android SDK 33+
-  - Java JDK 11+
-
  ```
 git clone https://github.com/yourusername/project-management-app.git
 cd project-management-app
