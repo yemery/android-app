@@ -86,6 +86,8 @@ public class AddProjectActivity extends AppCompatActivity {
 
         projectService.createProject(project);
         Toast.makeText(this, "Project added successfully", Toast.LENGTH_SHORT).show();
-        finish();
+
+        setResult(RESULT_OK); // Add this line to indicate success
+        finish(); // Close the activity
     }
 }

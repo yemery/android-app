@@ -48,9 +48,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     }
 
     public void updateProjects(List<Project> newProjects) {
-        projects.clear();
-        projects.addAll(newProjects);
-        notifyDataSetChanged();
+        this.projects.clear();
+        this.projects.addAll(newProjects);
+        notifyDataSetChanged(); // This refreshes the entire list
     }
 
     static class ProjectViewHolder extends RecyclerView.ViewHolder {

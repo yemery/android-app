@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 public class ProjectsActivity extends AppCompatActivity {
+    private static final int ADD_PROJECT_REQUEST = 1; // Add this constant
+
     private RecyclerView rvProjects;
     private ProjectAdapter projectAdapter;
     private ProjectController projectController;
@@ -42,7 +45,7 @@ public class ProjectsActivity extends AppCompatActivity {
         fabAddProject.setOnClickListener(v -> {
             Intent intent = new Intent(ProjectsActivity.this, AddProjectActivity.class);
             intent.putExtra("USER_ID", userId);
-            startActivity(intent);
+            startActivityForResult(intent, ADD_PROJECT_REQUEST); // Changed to startActivityForResult
         });
 
         loadProjects();
@@ -51,13 +54,24 @@ public class ProjectsActivity extends AppCompatActivity {
     private void loadProjects() {
         List<Project> projects = projectController.getProjectsByUserId(userId);
         if (projects != null) {
-            projectAdapter = new ProjectAdapter(projects, this::onProjectClick);
-            rvProjects.setAdapter(projectAdapter);
+            if (projectAdapter == null) {
+                projectAdapter = new ProjectAdapter(projects, this::onProjectClick);
+                rvProjects.setAdapter(projectAdapter);
+            } else {
+                projectAdapter.updateProjects(projects); // Update existing adapter
+            }
         } else {
             Toast.makeText(this, "Failed to load projects", Toast.LENGTH_SHORT).show();
         }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == ADD_PROJECT_REQUEST && resultCode == RESULT_OK) {
+            loadProjects(); // Refresh the project list
+        }
+    }
     private void onProjectClick(Project project) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Project Details");
