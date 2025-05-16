@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.activity.project.ProjectsActivity">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProjects"
         android:layout_width="match_parent"

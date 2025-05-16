@@ -34,13 +34,13 @@ public class DashboardActivity extends AppCompatActivity {
         tvWelcome = findViewById(R.id.tvWelcome);
         btnLogout = findViewById(R.id.btnLogout);
         btnViewProfile = findViewById(R.id.btnViewProfile);
-        btnViewUsers = findViewById(R.id.btnViewUsers);
+//        btnViewUsers = findViewById(R.id.btnViewUsers);
         btnViewProjects = findViewById(R.id.btnViewProjects);
 
         updateWelcomeMessage();
 
         btnViewProfile.setOnClickListener(v -> viewProfile());
-        btnViewUsers.setOnClickListener(v -> viewUsersList());
+//        btnViewUsers.setOnClickListener(v -> viewUsersList());
         btnViewProjects.setOnClickListener(v -> viewProjects());
         btnLogout.setOnClickListener(v -> logout());
     }
