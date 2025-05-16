@@ -1,5 +1,6 @@
 package com.example.mobile_project_sqlite3.view.activity.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,6 +67,11 @@ public class EditUserActivity extends AppCompatActivity {
 
         userController.updateUser(currentUser);
         Toast.makeText(this, "User updated successfully", Toast.LENGTH_SHORT).show();
+
+        // Return the updated username
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("UPDATED_USERNAME", username);
+        setResult(RESULT_OK, resultIntent);
         finish();
     }
 }

@@ -37,11 +37,7 @@ public class DashboardActivity extends AppCompatActivity {
         btnViewUsers = findViewById(R.id.btnViewUsers);
         btnViewProjects = findViewById(R.id.btnViewProjects);
 
-        // Display welcome message
-        User user = userController.getUserByUsername(username);
-        if (user != null) {
-            tvWelcome.setText("Welcome, " + user.getFirstName() + " " + user.getLastName() + "!");
-        }
+        updateWelcomeMessage();
 
         btnViewProfile.setOnClickListener(v -> viewProfile());
         btnViewUsers.setOnClickListener(v -> viewUsersList());
@@ -49,11 +45,18 @@ public class DashboardActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(v -> logout());
     }
 
+    private void updateWelcomeMessage() {
+        User user = userController.getUserByUsername(username);
+        if (user != null) {
+            tvWelcome.setText("Welcome, " + user.getFirstName() + " " + user.getLastName() + "!");
+        }
+    }
+
     private void viewProfile() {
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra("USERNAME", username);
         intent.putExtra("USER_ID", userId);
-        startActivity(intent);
+        startActivityForResult(intent, 1); // Using startActivityForResult to get updates
     }
 
     private void viewUsersList() {
@@ -69,5 +72,18 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void logout() {
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            // Refresh the username in case it was changed
+            if (data != null && data.hasExtra("UPDATED_USERNAME")) {
+                username = data.getStringExtra("UPDATED_USERNAME");
+            }
+            updateWelcomeMessage();
+        }
     }
 }
